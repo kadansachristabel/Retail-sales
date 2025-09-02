@@ -1,0 +1,45 @@
+ 
+  COUNT(DISTINCT `Transaction ID`) AS number_of_sales,
+  COUNT(DISTINCT `Customer ID`) AS number_of_customers,
+  SUM(`Total Amount`) AS total_revenue,
+  SUM(`Quantity`) AS total_quantity,
+  SUM(`Price per Unit`) AS total_price_per_unit,
+  CASE
+     WHEN `Age` BETWEEN 0 AND 15 THEN '01.0-15: Kids'
+     WHEN `Age` BETWEEN 16 AND 20 THEN '02.0-25: Teens'
+     WHEN `Age` BETWEEN 21 AND 30 THEN '03.0-30: Young Adults'
+     WHEN `Age` BETWEEN 31 AND 40 THEN '04.0-40: Adults'
+     ELSE '05. 41+: Seniors'
+  END AS age_group,
+  gender,
+  `Product Category`,
+  CASE
+     WHEN `Total Amount` BETWEEN 0 AND 100 THEN '01.0-100: Low'
+     WHEN `Total Amount` BETWEEN 101 AND 500 THEN '02.0-200: Medium'
+     ELSE '03. >500: High'
+  END AS revenue_group,
+  dayname(`Date`) AS day,
+  dayofmonth(`Date`) AS day_of_month,
+  date_format(`Date`, 'MMMM') AS month,
+  `Date` AS Purchase_date
+FROM retail_sales_dataset_1
+GROUP BY 
+  dayname(`Date`),
+  dayofmonth(`Date`),
+  date_format(`Date`, 'MMMM'),
+  CASE
+     WHEN `Age` BETWEEN 0 AND 15 THEN '01.0-15: Kids'
+     WHEN `Age` BETWEEN 16 AND 20 THEN '02.0-25: Teens'
+     WHEN `Age` BETWEEN 21 AND 30 THEN '03.0-30: Young Adults'
+     WHEN `Age` BETWEEN 31 AND 40 THEN '04.0-40: Adults'
+     ELSE '05. 41+: Seniors'
+  END,
+  CASE
+     WHEN `Total Amount` BETWEEN 0 AND 100 THEN '01.0-100: Low'
+     WHEN `Total Amount` BETWEEN 101 AND 500 THEN '02.0-200: Medium'
+     ELSE '03. >500: High'
+  END,
+  gender,
+  `Product Category`,
+  `Date`
+LIMIT 1000
